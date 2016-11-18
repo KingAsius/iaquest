@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import com.botscrew.iaquest.api.ApiContainer;
 import com.botscrew.iaquest.controllers.MainController;
+import com.botscrew.iaquest.model.Attachment;
 import com.botscrew.iaquest.model.MeetingRequest;
 import com.botscrew.iaquest.model.Message;
 import com.botscrew.iaquest.model.NotificationMessage;
@@ -23,14 +24,20 @@ public class IaquestController implements MainController {
 
 	@Override
 	public Message offerNewMeeting(MeetingRequest meetingRequest) {
-		// TODO Auto-generated method stub
-		return null;
+		Message answer = new Message();
+		answer.setText("Please, schedule new meeting. Theme :" + meetingRequest.getText());
+		Attachment e = new Attachment();
+		e.set
+		answer.getAttachments().add(e)
+		return answer;
 	}
 
 	@Override
 	public Message scheduleNewMeeting(MeetingConfirmation meetingConfirmation) {
-		// TODO Auto-generated method stub
-		return null;
+		NotificationMessage notif = new NotificationMessage();
+		notif.setRecepientId(recepientId);
+		notif.setText("Your meeting of " + theme + " is about to begin");
+		notif.setTimeOfNotification(timeOfNotification);
 	}
 
 	@Override

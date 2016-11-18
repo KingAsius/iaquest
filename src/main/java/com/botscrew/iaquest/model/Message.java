@@ -5,22 +5,34 @@ import java.util.List;
 
 public class Message {
 
-    private String text;
-    private List<Attachment> attachments = new ArrayList<>();
+	private String text;
 
-    public String getText() {
-        return text;
-    }
+	private List<Attachment> attachments = new ArrayList<>();
 
-    public void setText(String text) {
-        this.text = text;
-    }
+	private String recepientId;
 
-    public List<Attachment> getAttachments() {
-        return attachments;
-    }
+	public String getText() {
+		return text;
+	}
 
-    public void setAttachments(List<Attachment> attachments) {
-        this.attachments = attachments;
-    }
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public List<Attachment> getAttachments() {
+		return attachments;
+	}
+
+	public void setAttachments(List<Attachment> attachments) {
+		this.attachments = attachments;
+	}
+
+	public String getRecepientId() {
+		return recepientId;
+	}
+
+	public void setRecepientId(String recepientId) {
+		this.recepientId = recepientId;
+	}
+
 }
