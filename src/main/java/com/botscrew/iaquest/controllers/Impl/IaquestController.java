@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import com.botscrew.iaquest.api.ApiContainer;
 import com.botscrew.iaquest.controllers.MainController;
-import com.botscrew.iaquest.model.MeetingConfirmation;
+import com.botscrew.iaquest.model.messageconfirmation.MeetingConfirmation;
 import com.botscrew.iaquest.model.MeetingRequest;
 import com.botscrew.iaquest.model.Message;
 import com.botscrew.iaquest.model.NotificationMessage;

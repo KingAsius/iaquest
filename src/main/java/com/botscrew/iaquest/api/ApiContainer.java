@@ -1,6 +1,6 @@
 package com.botscrew.iaquest.api;
 
-import com.botscrew.iaquest.model.MeetingConfirmation;
+import com.botscrew.iaquest.model.messageconfirmation.MeetingConfirmation;
 import com.botscrew.iaquest.model.MeetingRequest;
 import com.botscrew.iaquest.model.Message;
 

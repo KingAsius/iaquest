@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.botscrew.iaquest.api.ApiContainer;
-import com.botscrew.iaquest.model.MeetingConfirmation;
+import com.botscrew.iaquest.model.messageconfirmation.MeetingConfirmation;
 import com.botscrew.iaquest.model.MeetingRequest;
 import com.botscrew.iaquest.model.Message;
 import com.ullink.slack.simpleslackapi.SlackSession;
