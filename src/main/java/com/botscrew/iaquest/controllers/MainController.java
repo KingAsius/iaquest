@@ -6,9 +6,9 @@ import com.botscrew.iaquest.model.meetingconfirmation.MeetingConfirmation;
 
 public interface MainController {
 
-	public Message offerNewMeeting(MeetingRequest command);
+	public Message offerNewMeeting(MeetingRequest meetingRequest);
 
-	public Message scheduleNewMeeting(MeetingConfirmation postback);
+	public Message scheduleNewMeeting(MeetingConfirmation meetingConfirmation);
 
 	public void sendNotifications();
 
