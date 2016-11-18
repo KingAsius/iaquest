@@ -1,4 +1,4 @@
-package com.botscrew.iaquest.model.messageconfirmation;
+package com.botscrew.iaquest.model.meetingconfirmation;
 
 /**
  * Created by Vladislav on 11/18/2016.

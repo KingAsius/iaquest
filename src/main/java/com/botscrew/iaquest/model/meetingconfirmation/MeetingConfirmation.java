@@ -1,4 +1,4 @@
-package com.botscrew.iaquest.model.messageconfirmation;
+package com.botscrew.iaquest.model.meetingconfirmation;
 
 import com.botscrew.iaquest.model.Action;
 import com.botscrew.iaquest.model.Message;
