@@ -37,7 +37,7 @@ public class IaquestController implements MainController {
 	public void sendNotifications() {
 		LocalDateTime now = LocalDateTime.now();
 		for (NotificationMessage notif : notifications) {
-			if (notif.getTimeOfNotification().isAfter(now)) {
+			if (notif.getTimeOfNotification().isBefore(now)) {
 				apiContainer.sendMessage(notif);
 			}
 		}
