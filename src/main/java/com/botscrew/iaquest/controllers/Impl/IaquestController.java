@@ -1,6 +1,7 @@
 package com.botscrew.iaquest.controllers.Impl;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -14,6 +15,7 @@ import com.botscrew.iaquest.model.MeetingRequest;
 import com.botscrew.iaquest.model.Message;
 import com.botscrew.iaquest.model.NotificationMessage;
 import com.botscrew.iaquest.model.meetingconfirmation.MeetingConfirmation;
+import com.botscrew.iaquest.tools.MeetingTimeBuilder;
 
 public class IaquestController implements MainController {
 
@@ -22,18 +24,28 @@ public class IaquestController implements MainController {
 
 	private LinkedList<NotificationMessage> notifications;
 
+	private MeetingTimeBuilder timeBuilder = new MeetingTimeBuilder();
+
 	@Override
 	public Message offerNewMeeting(MeetingRequest meetingRequest) {
 		Message answer = new Message();
 		answer.setText("Please, schedule new meeting. Theme :" + meetingRequest.getText());
-		Attachment e = new Attachment();
-		e.set
-		answer.getAttachments().add(e)
+		Attachment attachment = new Attachment();
+		attachment.setText("Choose time");
+		attachment.setCallBackId("test");
+		attachment.setFallback("You are unable to choose time");
+		for (String timeValue : timeBuilder.suggestNewMeetingTime(LocalTime.now(), 15)) {
+
+		}
+		attachment.addButton();
+		answer.setAttachment(attachment);
+
 		return answer;
 	}
 
 	@Override
 	public Message scheduleNewMeeting(MeetingConfirmation meetingConfirmation) {
+
 		NotificationMessage notif = new NotificationMessage();
 		notif.setRecepientId(recepientId);
 		notif.setText("Your meeting of " + theme + " is about to begin");

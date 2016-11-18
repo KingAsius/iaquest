@@ -44,4 +44,9 @@ public class Attachment {
 		this.buttons = buttons;
 	}
 
+	public void addButton(Button button) {
+		buttons.add(button);
+
+	}
+
 }
