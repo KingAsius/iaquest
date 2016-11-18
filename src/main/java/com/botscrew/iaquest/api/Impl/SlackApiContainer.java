@@ -16,19 +16,16 @@ public class SlackApiContainer implements ApiContainer {
 	@Override
 	public void sendMessage(Message message) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void receiveCommand(MeetingRequest meetingRequest) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void receivePostback(MeetingConfirmation meetingConfirmation) {
 		// TODO Auto-generated method stub
-
 	}
 
 }
