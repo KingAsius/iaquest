@@ -1,5 +1,5 @@
 package com.botscrew.iaquest.model;
 
-public class Command {
+public class MeetingRequest {
 
 }

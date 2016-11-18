@@ -1,14 +1,14 @@
 package com.botscrew.iaquest.controllers;
 
-import com.botscrew.iaquest.model.Command;
+import com.botscrew.iaquest.model.MeetingRequest;
 import com.botscrew.iaquest.model.Message;
-import com.botscrew.iaquest.model.Postback;
+import com.botscrew.iaquest.model.MeetingConfirmation;
 
 public interface MainController {
 
-	public Message commandReceived(Command command);
+	public Message offerNewMeeting(MeetingRequest command);
 
-	public Message postbackReceived(Postback postback);
+	public Message scheduleNewMeeting(MeetingConfirmation postback);
 
 	public void sendNotifications();
 
