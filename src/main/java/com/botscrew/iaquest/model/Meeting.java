@@ -56,4 +56,14 @@ public class Meeting {
 		this.theme = theme;
 	}
 
+	@Override
+	public String toString() {
+		return "Meeting{" +
+				"channel_id='" + channel_id + '\'' +
+				", requester_id='" + requester_id + '\'' +
+				", confirmer_id='" + confirmer_id + '\'' +
+				", theme='" + theme + '\'' +
+				", action_value='" + action_value + '\'' +
+				'}';
+	}
 }

@@ -6,7 +6,7 @@ import java.util.List;
 public class Message {
 
 	private String text;
-	private String response_type;
+	private String response_type = "in_channel";
 	private List<Attachment> attachments = new ArrayList<>();
 
 	public Message() {

@@ -57,4 +57,15 @@ public class SlackCredentials {
 		this.team_id = team_id;
 	}
 
+	@Override
+	public String toString() {
+		return "SlackCredentials{" +
+				"ok=" + ok +
+				", access_token='" + access_token + '\'' +
+				", scope='" + scope + '\'' +
+				", user_id='" + user_id + '\'' +
+				", team_name='" + team_name + '\'' +
+				", team_id='" + team_id + '\'' +
+				'}';
+	}
 }

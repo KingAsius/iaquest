@@ -26,8 +26,8 @@ public class IaquestController implements MainController {
 	private ApiContainer apiContainer;
 
 	private Map<String, MeetingRequest> meetingsArrangements = new HashMap<String, MeetingRequest>();
-
-	private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+	@Autowired
+	private DateTimeFormatter timeFormatter;
 	private MeetingTimeBuilder timeBuilder = new MeetingTimeBuilder(timeFormatter);
 
 	@Override
@@ -46,7 +46,9 @@ public class IaquestController implements MainController {
 		if (request != null) {
 			if (!confirmation.getUser_id().equals(request.getUser_id())) {
 				Meeting meeting = new Meeting(request, confirmation);
-				apiContainer.scheduleMeeting(meeting);
+				if (!meeting.getAction_value().equalsIgnoreCase("now")) {
+					apiContainer.scheduleMeeting(meeting);
+				}
 				meetingsArrangements.remove(meeting.getChannel_id());
 				return buildMeetingConfirmationMessage(meeting);
 			} else {
