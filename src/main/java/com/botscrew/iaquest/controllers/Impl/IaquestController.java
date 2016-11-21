@@ -1,70 +1,111 @@
 package com.botscrew.iaquest.controllers.Impl;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Controller;
 
 import com.botscrew.iaquest.api.ApiContainer;
 import com.botscrew.iaquest.controllers.MainController;
+import com.botscrew.iaquest.model.Action;
 import com.botscrew.iaquest.model.Attachment;
+import com.botscrew.iaquest.model.Meeting;
+import com.botscrew.iaquest.model.MeetingConfirmation;
 import com.botscrew.iaquest.model.MeetingRequest;
 import com.botscrew.iaquest.model.Message;
-import com.botscrew.iaquest.model.NotificationMessage;
-import com.botscrew.iaquest.model.meetingconfirmation.MeetingConfirmation;
 import com.botscrew.iaquest.tools.MeetingTimeBuilder;
 
+@Controller
 public class IaquestController implements MainController {
 
 	@Autowired
 	private ApiContainer apiContainer;
 
-	private LinkedList<NotificationMessage> notifications;
+	private Map<String, MeetingRequest> meetingsArrangements = new HashMap<String, MeetingRequest>();
 
-	private MeetingTimeBuilder timeBuilder = new MeetingTimeBuilder();
+	private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+	private MeetingTimeBuilder timeBuilder = new MeetingTimeBuilder(timeFormatter);
 
 	@Override
-	public Message offerNewMeeting(MeetingRequest meetingRequest) {
-		Message answer = new Message();
-		answer.setText("Please, schedule new meeting. Theme :" + meetingRequest.getText());
-		Attachment attachment = new Attachment();
-		attachment.setText("Choose time");
-		attachment.setCallBackId("test");
-		attachment.setFallback("You are unable to choose time");
-		for (String timeValue : timeBuilder.suggestNewMeetingTime(LocalTime.now(), 15)) {
-
+	public Message requestMeeting(MeetingRequest request) {
+		if (!meetingsArrangements.containsKey(request.getChannel_id())) {
+			meetingsArrangements.put(request.getChannel_id(), request);
+			return buildMeetingOfferMessage(request);
+		} else {
+			return buildChannelAlreadyHasMeetingOfferExcuse(request);
 		}
-		attachment.addButton();
-		answer.setAttachment(attachment);
+	}
 
+	@Override
+	public Message confirmMeeting(MeetingConfirmation confirmation) {
+		MeetingRequest request = meetingsArrangements.get(confirmation.getChannel_id());
+		if (request != null) {
+			if (!confirmation.getUser_id().equals(request.getUser_id())) {
+				Meeting meeting = new Meeting(request, confirmation);
+				apiContainer.scheduleMeeting(meeting);
+				meetingsArrangements.remove(meeting.getChannel_id());
+				return buildMeetingConfirmationMessage(meeting);
+			} else {
+				return buildSelfConfirmationExcuse();
+			}
+		} else {
+			return buildMeetingRequestExpiredExcuse();
+		}
+	}
+
+	private Message buildMeetingOfferMessage(MeetingRequest request) {
+		Message answer = new Message();
+		answer.setText("Please, schedule new meeting. Theme :" + request.getText());
+		Attachment attachment = new Attachment();
+		attachment.setText("Choose time: ");
+		attachment.setCallback_id("time_choosing");
+		attachment.setFallback("You are unable to choose time.");
+		attachment.setAttachment_type("default");
+		int i = 0;
+		for (String timeValue : timeBuilder.suggestNewMeetingTime(LocalTime.now(), 15)) {
+			Action button = new Action();
+			button.setName("button_" + i);
+			button.setText(timeValue);
+			button.setType("button");
+			button.setValue(timeValue);
+			attachment.getActions().add(button);
+		}
+
+		answer.getAttachments().add(attachment);
 		return answer;
 	}
 
-	@Override
-	public Message scheduleNewMeeting(MeetingConfirmation meetingConfirmation) {
+	private Message buildMeetingConfirmationMessage(Meeting meeting) {
+		LocalTime meetingTime;
+		String meetingConfirmationMessageText;
+		try {
+			meetingTime = LocalTime.parse(meeting.getAction_value());
+			meetingConfirmationMessageText = String.format("Meeting of %s is scheduled at %s. I will notify you just before it begins ;)", meeting.getTheme(),
+					meetingTime.format(timeFormatter));
+		} catch (DateTimeParseException exc) {
+			meetingTime = LocalTime.now();
+			meetingConfirmationMessageText = String.format("Meeting of %s is scheduled to now.", meeting.getTheme());
 
-		NotificationMessage notif = new NotificationMessage();
-		notif.setRecepientId(recepientId);
-		notif.setText("Your meeting of " + theme + " is about to begin");
-		notif.setTimeOfNotification(timeOfNotification);
+		}
+		Message answer = new Message();
+		answer.setText(meetingConfirmationMessageText);
+		return answer;
 	}
 
-	@Override
-	@Scheduled(fixedDelay = 3000)
-	public void sendNotifications() {
-		LocalDateTime now = LocalDateTime.now();
-		Iterator<NotificationMessage> iterator = notifications.iterator();
-		NotificationMessage message;
-		while (iterator.hasNext()) {
-			message = iterator.next();
-			if (message.getTimeOfNotification().isAfter(now)) {
-				apiContainer.sendMessage(message);
-				iterator.remove();
-			}
-		}
+	private Message buildChannelAlreadyHasMeetingOfferExcuse(MeetingRequest meetingRequest) {
+		return new Message("Sorry I can not make new meeting request in channel, where previuos was not confirmed.");
+	}
+
+	private Message buildSelfConfirmationExcuse() {
+		return new Message("Opps, you can not schedule your own request.");
+	}
+
+	private Message buildMeetingRequestExpiredExcuse() {
+		return new Message("This meeting request has expired.");
 	}
 
 }
