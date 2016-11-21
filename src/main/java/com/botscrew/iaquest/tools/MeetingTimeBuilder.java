@@ -7,7 +7,11 @@ import java.util.List;
 
 public class MeetingTimeBuilder {
 
-	private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+	private DateTimeFormatter timeFormatter;
+
+	public MeetingTimeBuilder(DateTimeFormatter timeFormatter) {
+		this.timeFormatter = timeFormatter;
+	}
 
 	public List<String> suggestNewMeetingTime(LocalTime now, int minutesStep) {
 		return suggestNewMeetingTime(now, 0, minutesStep);
