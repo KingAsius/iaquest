@@ -3,12 +3,10 @@ package com.botscrew.iaquest.model;
 public class MeetingRequest {
 
 	private String channel_id;
-
 	private String user_id;
-
 	private String command;
-
 	private String text;
+	private String response_url;
 
 	public String getChannel_id() {
 		return channel_id;
@@ -40,5 +38,13 @@ public class MeetingRequest {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public String getResponse_url() {
+		return response_url;
+	}
+
+	public void setResponse_url(String response_url) {
+		this.response_url = response_url;
 	}
 }

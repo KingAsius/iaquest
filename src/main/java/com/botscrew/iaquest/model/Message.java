@@ -1,12 +1,21 @@
 package com.botscrew.iaquest.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Message {
 
 	private String text;
+	private String response_type;
+	private List<Attachment> attachments = new ArrayList<>();
 
-	private Attachment attachment;
+	public Message() {
 
-	private String recepientId;
+	}
+
+	public Message(String text) {
+		this.text = text;
+	}
 
 	public String getText() {
 		return text;
@@ -16,20 +25,20 @@ public class Message {
 		this.text = text;
 	}
 
-	public Attachment getAttachment() {
-		return attachment;
+	public String getResponse_type() {
+		return response_type;
 	}
 
-	public void setAttachment(Attachment attachment) {
-		this.attachment = attachment;
+	public void setResponse_type(String response_type) {
+		this.response_type = response_type;
 	}
 
-	public String getRecepientId() {
-		return recepientId;
+	public List<Attachment> getAttachments() {
+		return attachments;
 	}
 
-	public void setRecepientId(String recepientId) {
-		this.recepientId = recepientId;
+	public void setAttachments(List<Attachment> attachments) {
+		this.attachments = attachments;
 	}
 
 }

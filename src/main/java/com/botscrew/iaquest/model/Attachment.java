@@ -1,16 +1,15 @@
 package com.botscrew.iaquest.model;
 
+import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by Vladislav on 11/18/2016.
- */
 public class Attachment {
 
 	private String text;
 	private String fallback;
-	private String callBackId;
-	private List<Button> buttons;
+	private String callback_id;
+	private String attachment_type;
+	private List<Action> actions = new LinkedList<Action>();
 
 	public String getText() {
 		return text;
@@ -28,25 +27,28 @@ public class Attachment {
 		this.fallback = fallback;
 	}
 
-	public String getCallBackId() {
-		return callBackId;
+	public String getCallback_id() {
+		return callback_id;
 	}
 
-	public void setCallBackId(String callBackId) {
-		this.callBackId = callBackId;
+	public void setCallback_id(String callback_id) {
+		this.callback_id = callback_id;
 	}
 
-	public List<Button> getButtons() {
-		return buttons;
+	public List<Action> getActions() {
+		return actions;
 	}
 
-	public void setButtons(List<Button> buttons) {
-		this.buttons = buttons;
+	public void setActions(List<Action> buttons) {
+		this.actions = buttons;
 	}
 
-	public void addButton(Button button) {
-		buttons.add(button);
+	public String getAttachment_type() {
+		return attachment_type;
+	}
 
+	public void setAttachment_type(String attachment_type) {
+		this.attachment_type = attachment_type;
 	}
 
 }
