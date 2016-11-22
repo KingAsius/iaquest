@@ -85,15 +85,15 @@ public class SlackApiContainer implements ApiContainer {
 	}
 
 	@Override
-	public void scheduleMeeting(Meeting meeting) {
+	public void sendReminders(Meeting meeting) {
 		try {
-			LocalTime time =  LocalTime.parse(meeting.getAction_value());
+			LocalTime time = LocalTime.parse(meeting.getAction_value());
 			time = time.minusMinutes(5);
 
-		String s = String.format("https://slack.com/api/reminders.add?token=%s&text=%s&time=%s&user=",
+		String url = String.format("https://slack.com/api/reminders.add?token=%s&text=%s&time=%s&user=",
 				credentials.getAccess_token(), "You have meeting with theme \"" + meeting.getTheme() + "\" 5 minutes later", time.format(meetingTimeBuilder.getTimeFormatter()));
-		restTemplate.getForObject(s + meeting.getConfirmer_id(), String.class);
-		restTemplate.getForObject(s + meeting.getRequester_id(), String.class);
+		restTemplate.getForObject(url + meeting.getConfirmer_id(), String.class);
+		restTemplate.getForObject(url + meeting.getRequester_id(), String.class);
 		}
 		catch (NumberFormatException e) {
 			System.err.println("Illegal type of action_value");

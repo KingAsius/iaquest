@@ -12,6 +12,6 @@ public interface ApiContainer {
 
 	public void receiveTeamInstallationToken(String code);
 
-	public void scheduleMeeting(Meeting meeting);
+	public void sendReminders(Meeting meeting);
 
 }

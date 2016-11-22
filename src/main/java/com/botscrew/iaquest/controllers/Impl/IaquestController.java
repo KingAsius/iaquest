@@ -50,7 +50,7 @@ public class IaquestController implements MainController {
 			}
 			if (!confirmation.getUser_id().equals(request.getUser_id())) {
 				if (!meeting.getAction_value().equalsIgnoreCase("now")) {
-					apiContainer.scheduleMeeting(meeting);
+					apiContainer.sendReminders(meeting);
 				}
 				meetingsArrangements.remove(meeting.getChannel_id());
 				return buildMeetingConfirmationMessage(meeting);
