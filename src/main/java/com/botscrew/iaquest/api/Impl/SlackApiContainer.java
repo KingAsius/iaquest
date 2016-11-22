@@ -1,5 +1,6 @@
 package com.botscrew.iaquest.api.Impl;
 
+import com.botscrew.iaquest.tools.MeetingTimeBuilder;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,8 +15,10 @@ import com.botscrew.iaquest.model.Meeting;
 import com.botscrew.iaquest.model.MeetingConfirmation;
 import com.botscrew.iaquest.model.MeetingRequest;
 import com.botscrew.iaquest.model.Message;
+
+import javax.annotation.PostConstruct;
+import java.io.*;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 @RestController
 public class SlackApiContainer implements ApiContainer {
@@ -27,7 +30,7 @@ public class SlackApiContainer implements ApiContainer {
 	private RestTemplate restTemplate;
 
 	@Autowired
-	private DateTimeFormatter timeFormatter;
+	private MeetingTimeBuilder meetingTimeBuilder;
 
 	@Value("${slack.client_id}")
 	private String client_id;
@@ -35,8 +38,6 @@ public class SlackApiContainer implements ApiContainer {
 	private String client_secret;
 	@Value("${slack.team_name}")
 	private String theOnlyTeamName;
-	@Value("${slack.access_token}")
-	private String accessToken;
 
 	private SlackCredentials credentials;
 
@@ -47,6 +48,18 @@ public class SlackApiContainer implements ApiContainer {
 					"https://slack.com/api/oauth.access?client_id=" + client_id + "&client_secret=" + client_secret + "&code=" + code, null, SlackCredentials.class);
 			if (c.getTeam_name().equals(theOnlyTeamName)) {
 				credentials = c;
+				try {
+					File file = new File(System.getProperty("user.dir") + "\\src\\main\\resources\\token.txt");
+					if (file.exists()) {
+						file.delete();
+					}
+					file.createNewFile();
+					BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+					writer.write(c.getAccess_token());
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 	}
 
@@ -77,7 +90,7 @@ public class SlackApiContainer implements ApiContainer {
 			time = time.minusMinutes(5);
 
 		String s = String.format("https://slack.com/api/reminders.add?token=%s&text=%s&time=%s&user=",
-				accessToken, meeting.getTheme(), time.format(timeFormatter));
+				credentials.getAccess_token(), "You have meeting with theme \"" + meeting.getTheme() + "\" 5 minutes later", time.format(meetingTimeBuilder.getTimeFormatter()));
 		restTemplate.getForObject(s + meeting.getConfirmer_id(), String.class);
 		restTemplate.getForObject(s + meeting.getRequester_id(), String.class);
 		}
@@ -85,5 +98,21 @@ public class SlackApiContainer implements ApiContainer {
 			System.err.println("Illegal type of action_value");
 		}
 	}
+
+	@PostConstruct
+	private void checkCredentials() {
+		if (credentials == null) {
+			try {
+				BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\src\\main\\resources\\token.txt"));
+				SlackCredentials fileCredentials = new SlackCredentials();
+				fileCredentials.setAccess_token(reader.readLine());
+				reader.close();
+				credentials = fileCredentials;
+			} catch (IOException e) {
+				System.err.println("Problem with token file");
+				e.printStackTrace();
+			}
+		}
+		}
 
 }

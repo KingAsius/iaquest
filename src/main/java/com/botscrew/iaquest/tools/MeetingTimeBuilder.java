@@ -1,17 +1,19 @@
 package com.botscrew.iaquest.tools;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class MeetingTimeBuilder {
 
-	private DateTimeFormatter timeFormatter;
 
-	public MeetingTimeBuilder(DateTimeFormatter timeFormatter) {
-		this.timeFormatter = timeFormatter;
-	}
+	private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+	public MeetingTimeBuilder(DateTimeFormatter timeFormatter) {}
 
 	public List<String> suggestNewMeetingTime(LocalTime now, int minutesStep) {
 		return suggestNewMeetingTime(now, 0, minutesStep);
@@ -33,5 +35,13 @@ public class MeetingTimeBuilder {
 		int currentMinute = baseTime.getMinute();
 		int difference = currentMinute - (currentMinute / 15) * 15;
 		return baseTime.minusMinutes(difference);
+	}
+
+	public DateTimeFormatter getTimeFormatter() {
+		return timeFormatter;
+	}
+
+	public void setTimeFormatter(DateTimeFormatter timeFormatter) {
+		this.timeFormatter = timeFormatter;
 	}
 }
