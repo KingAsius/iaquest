@@ -13,7 +13,7 @@ public class MeetingTimeBuilder {
 
 	private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-	public MeetingTimeBuilder(DateTimeFormatter timeFormatter) {}
+	public MeetingTimeBuilder() {}
 
 	public List<String> suggestNewMeetingTime(LocalTime now, int minutesStep) {
 		return suggestNewMeetingTime(now, 0, minutesStep);

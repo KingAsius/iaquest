@@ -1,4 +1,4 @@
-package com.botscrew.iaquest.api.Impl;
+package com.botscrew.iaquest.api.impl;
 
 import com.botscrew.iaquest.tools.MeetingTimeBuilder;
 import org.json.JSONObject;
@@ -49,7 +49,8 @@ public class SlackApiContainer implements ApiContainer {
 			if (c.getTeam_name().equals(theOnlyTeamName)) {
 				credentials = c;
 				try {
-					File file = new File(System.getProperty("user.dir") + "\\src\\main\\resources\\token.txt");
+					String s = File.separator;
+					File file = new File(System.getProperty("user.dir") + s + "src" + "main" + s + "resources" + s + "token.txt");
 					if (file.exists()) {
 						file.delete();
 					}
@@ -103,7 +104,8 @@ public class SlackApiContainer implements ApiContainer {
 	private void checkCredentials() {
 		if (credentials == null) {
 			try {
-				BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\src\\main\\resources\\token.txt"));
+				String s = File.separator;
+				BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + s + "src" + "main" + s + "resources" + s + "token.txt"));
 				SlackCredentials fileCredentials = new SlackCredentials();
 				fileCredentials.setAccess_token(reader.readLine());
 				reader.close();
@@ -113,6 +115,6 @@ public class SlackApiContainer implements ApiContainer {
 				e.printStackTrace();
 			}
 		}
-		}
+	}
 
 }

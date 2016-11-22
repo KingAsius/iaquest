@@ -1,7 +1,6 @@
-package com.botscrew.iaquest.controllers.Impl;
+package com.botscrew.iaquest.controllers.impl;
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,10 +24,10 @@ public class IaquestController implements MainController {
 	@Autowired
 	private ApiContainer apiContainer;
 
-	private Map<String, MeetingRequest> meetingsArrangements = new HashMap<String, MeetingRequest>();
-
 	@Autowired
 	private MeetingTimeBuilder timeBuilder;
+
+	private Map<String, MeetingRequest> meetingsArrangements = new HashMap<String, MeetingRequest>();
 
 	@Override
 	public Message requestMeeting(MeetingRequest request) {
@@ -113,7 +112,6 @@ public class IaquestController implements MainController {
 		} catch (DateTimeParseException exc) {
 			meetingTime = LocalTime.now();
 			meetingConfirmationMessageText = String.format("Meeting of %s is scheduled to now.", meeting.getTheme());
-
 		}
 		Message answer = new Message();
 		answer.setText(meetingConfirmationMessageText);

@@ -19,7 +19,7 @@ public class MeetingTimeBuilderTests {
 
 	@Test
 	public void Case_current_minutes_in_0_14() {
-		MeetingTimeBuilder builder = new MeetingTimeBuilder(timeFormatter);
+		MeetingTimeBuilder builder = new MeetingTimeBuilder();
 		LocalTime time = LocalTime.of(14, 7);
 
 		List<String> times = builder.suggestNewMeetingTime(time, 15);
@@ -29,7 +29,7 @@ public class MeetingTimeBuilderTests {
 
 	@Test
 	public void Case_current_minutes_in__15_29() {
-		MeetingTimeBuilder builder = new MeetingTimeBuilder(timeFormatter);
+		MeetingTimeBuilder builder = new MeetingTimeBuilder();
 		LocalTime time = LocalTime.of(14, 21);
 
 		List<String> times = builder.suggestNewMeetingTime(time, 15);
@@ -40,7 +40,7 @@ public class MeetingTimeBuilderTests {
 
 	@Test
 	public void Case_current_minutes_in__30_44() {
-		MeetingTimeBuilder builder = new MeetingTimeBuilder(timeFormatter);
+		MeetingTimeBuilder builder = new MeetingTimeBuilder();
 		LocalTime time = LocalTime.of(14, 33);
 
 		List<String> times = builder.suggestNewMeetingTime(time, 15);
@@ -51,7 +51,7 @@ public class MeetingTimeBuilderTests {
 
 	@Test
 	public void Case_current_minutes_in__45_59() {
-		MeetingTimeBuilder builder = new MeetingTimeBuilder(timeFormatter);
+		MeetingTimeBuilder builder = new MeetingTimeBuilder();
 		LocalTime time = LocalTime.of(14, 47);
 
 		List<String> times = builder.suggestNewMeetingTime(time, 15);

@@ -1,4 +1,4 @@
-package com.botscrew.iaquest.api.Impl;
+package com.botscrew.iaquest.api.impl;
 
 public class SlackCredentials {
 
